@@ -4,6 +4,5 @@
 - Frontend: React + Standard CSS
 - Backend: not started yet...
 
-![booking1](https://user-images.githubusercontent.com/120139042/224329939-c1db8ebe-00dd-4207-80b0-c77b053311e1.png)
-
+![booking2](https://user-images.githubusercontent.com/120139042/224383548-4c4c0489-ff2e-46ac-8add-2bb3270ae984.png)
 
