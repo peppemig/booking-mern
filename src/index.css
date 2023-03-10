@@ -8,3 +8,11 @@
 body, html {
   font-family: 'Poppins', sans-serif;
 }
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+html {
+  scroll-behavior: smooth;
+}
