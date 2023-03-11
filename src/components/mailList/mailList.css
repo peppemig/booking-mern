@@ -1,0 +1,66 @@
+.mailListContainer {
+    display: flex;
+    width: 100%;
+    background-color: #00224f;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.mailListTitles {
+    display: flex-col;
+    align-items: center;
+    color: white;
+    margin-top: 40px;
+
+}
+
+.mailListTitles > span {
+    font-weight: light;
+    font-size: 15px;
+}
+
+
+.mailInput {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 40px;
+}
+
+.mailInput > input {
+    height: 40px;
+    width: 300px;
+    padding: 5px;
+    border-radius: 10px;
+    border: none;
+    font-family: inherit;
+}
+
+.mailInput > button {
+    color: white;
+    background-color: #0071c2;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-weight: bold;
+}
+
+.registerYourStructure {
+    background-color: #003580;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.registerYourStructure > button {
+    padding: 10px;
+    font-family: inherit;
+    border: 1px solid white;
+    border-radius: 3px;
+    background-color: transparent;
+    color: white;
+    cursor: pointer;
+}
