@@ -45,8 +45,15 @@ export const getHotel = async (req,res,next) => {
 // GET ALL HOTELS
 export const getAllHotels = async (req,res,next) => {
     try {
-        const hotels = await Hotel.find()
-        res.status(200).json(hotels)
+        if (req.query.featured !== undefined) {
+            // SPECIFIC REQUEST IF QUERY FARAMS ARE PRESENT
+            const hotels = await Hotel.find({featured: req.query.featured}).limit(parseInt(req.query.limit))
+            res.status(200).json(hotels)
+        } else {
+            // ELSE GET ALL HOTELS
+            const hotels = await Hotel.find()
+            res.status(200).json(hotels)
+        }
     } catch(err) {
         next(err)
     }

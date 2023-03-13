@@ -22,6 +22,7 @@ router.get("/", getAllHotels)
 //GET HOTELS BY CITY
 router.get("/countyByCity", countyByCity)
 
+//GET HOTELS BY TYPE
 router.get("/countByType", countByType)
 
 export default router
