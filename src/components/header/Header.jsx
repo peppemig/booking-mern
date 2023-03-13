@@ -7,6 +7,7 @@ import 'react-date-range/dist/styles.css'
 import 'react-date-range/dist/theme/default.css'
 import { format } from "date-fns"
 import { useNavigate } from 'react-router-dom'
+import { upperFirstLetter } from '../../utils/upperFirstLetter'
 
 const Header = ({type}) => {
     const [destination, setDestination] = useState('')
@@ -37,7 +38,8 @@ const Header = ({type}) => {
     }
 
     const handleSearch = () => {
-        navigate("/hotels", {state: {destination,date,options}});
+        const destinationUpper = upperFirstLetter(destination)
+        navigate("/hotels", {state: {destinationUpper,date,options}});
     };
 
 
