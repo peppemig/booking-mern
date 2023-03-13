@@ -45,12 +45,23 @@ export const getHotel = async (req,res,next) => {
 // GET ALL HOTELS
 export const getAllHotels = async (req,res,next) => {
     try {
-        if (req.query.featured !== undefined) {
-            // SPECIFIC REQUEST IF QUERY FARAMS ARE PRESENT
+        if ((req.query.featured !== undefined) && ((req.query.min !== undefined) || (req.query.max !== undefined))) {
+            const hotels = await Hotel.find({featured: req.query.featured, cheapestPrice: { $gt: req.query.min || 1, $lte: req.query.max }}).limit(parseInt(req.query.limit))
+            res.status(200).json(hotels)
+
+        } else if (req.query.featured !== undefined) {
             const hotels = await Hotel.find({featured: req.query.featured}).limit(parseInt(req.query.limit))
             res.status(200).json(hotels)
+
+        } else if (req.query.city !== undefined && ((req.query.min !== undefined) || (req.query.max !== undefined))) {
+            const hotels = await Hotel.find({city: req.query.city, cheapestPrice: { $gt: req.query.min || 1, $lte: req.query.max }})
+            res.status(200).json(hotels)
+
+        } else if (req.query.city !== undefined) {
+            const hotels = await Hotel.find({city: req.query.city})
+            res.status(200).json(hotels)
+
         } else {
-            // ELSE GET ALL HOTELS
             const hotels = await Hotel.find()
             res.status(200).json(hotels)
         }
@@ -58,9 +69,8 @@ export const getAllHotels = async (req,res,next) => {
         next(err)
     }
 }
-
 // GET HOTELS BY CITY
-export const countyByCity = async (req,res,next) => {
+export const countByCity = async (req,res,next) => {
     const cities = req.query.cities.split(",")
     try {
         const list = await Promise.all(cities.map(city=>{
