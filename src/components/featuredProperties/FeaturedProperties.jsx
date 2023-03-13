@@ -1,7 +1,11 @@
 import React from 'react'
 import './featuredProperties.css'
+import useFetch from '../../hooks/useFetch'
 
 const FeaturedProperties = () => {
+
+    const {data,loading,error} = useFetch("http://localhost:8800/api/hotels/countyByCity?cities=madrid,london,berlin")
+
   return (
     <div className="fp">
 
