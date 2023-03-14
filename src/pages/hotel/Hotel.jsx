@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import './hotel.css'
 import Navbar from '../../components/navbar/Navbar'
 import Header from '../../components/header/Header'
@@ -8,6 +8,7 @@ import MailList from "../../components/mailList/MailList"
 import Footer from "../../components/footer/Footer"
 import useFetch from '../../hooks/useFetch'
 import { useParams } from 'react-router-dom'
+import { SearchContext } from '../../context/SearchContext'
 
 const Hotel = () => {
   const [slideNumber, setSlideNumber] = useState(0)
@@ -16,6 +17,17 @@ const Hotel = () => {
   const {id} = useParams()
 
   const {data,loading,error,reFetch} = useFetch(`http://localhost:8800/api/hotels/find/${id}`)
+
+  const { dates, options } = useContext(SearchContext)
+  
+  const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24
+  function dayDifference(date1, date2) {
+    const timeDiff = Math.abs(date2.getTime() - date1.getTime());
+    const diffDays = Math.ceil(timeDiff / MILLISECONDS_PER_DAY);
+    return diffDays;
+  }
+
+  const days = dayDifference(dates[0].endDate, dates[0].startDate)
 
   const handleOpen = (number) => {
     setSlideNumber(number)
@@ -65,9 +77,9 @@ const Hotel = () => {
               <p className="hotelDesc">{data.description}</p>
             </div>
             <div className="hotelDetailsPrice">
-              <h1>Perfect for a 9-night stay!</h1>
+              <h1>Perfect for a {days}-nights stay!</h1>
               <span>Located in the heart of {data.city}, this property has an excellent location score!</span>
-              <h2><b>€{parseInt(data?.cheapestPrice) * 9}</b> (9 nights)</h2>
+              <h2><b>€{parseInt(data?.cheapestPrice) * days * options.room}</b> ({days} nights)</h2>
               <button>Reserve or Book Now!</button>
             </div>
           </div>

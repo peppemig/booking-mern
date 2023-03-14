@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import "./header.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBed, faCalendarDays, faCar, faPerson, faPlaceOfWorship, faPlane, faTaxi } from '@fortawesome/free-solid-svg-icons'
@@ -8,10 +8,13 @@ import 'react-date-range/dist/theme/default.css'
 import { format } from "date-fns"
 import { useNavigate } from 'react-router-dom'
 import { upperFirstLetter } from '../../utils/upperFirstLetter'
+import { SearchContext } from '../../context/SearchContext'
+import { AuthContext } from '../../context/AuthContext'
 
 const Header = ({type}) => {
+
     const [destination, setDestination] = useState('')
-    const [date, setDate] = useState([
+    const [dates, setDates] = useState([
         {
             startDate: new Date(),
             endDate: new Date(),
@@ -37,9 +40,13 @@ const Header = ({type}) => {
         })
     }
 
+    const {user} = useContext(AuthContext)
+    const {dispatch} = useContext(SearchContext)
+
     const handleSearch = () => {
         const destinationUpper = upperFirstLetter(destination)
-        navigate("/hotels", {state: {destinationUpper,date,options}});
+        dispatch({type: "NEW_SEARCH", payload: {destinationUpper, dates, options }})
+        navigate("/hotels", {state: {destinationUpper, dates, options}});
     };
 
 
@@ -73,7 +80,9 @@ const Header = ({type}) => {
             { type !== "list" && (
             <><h1 className="headerTitle">A lifetime of discounts? It's Genius.</h1>
             <p className="headerDesc">Get rewarded for your travels - unlock instant savings of 10% or more by creating an account!</p>
-            <button className="headerBtn">Sign in / Register </button>
+            { !user &&
+            <button className="headerBtn" onClick={() => navigate("/login")}>Sign in / Register </button>
+            }
 
             <div className="headerSearch">
 
@@ -89,13 +98,13 @@ const Header = ({type}) => {
 
                 <div className="headerSearchItem">
                     <FontAwesomeIcon icon={faCalendarDays} className="headerIcon"/>
-                    <span onClick={() => setCalendarStatus(!calendarStatus)} className='headerSearchText'>{`${format(date[0].startDate, "dd-MM-yyyy")} to ${format(date[0].endDate, "dd-MM-yyyy")} `}</span>
+                    <span onClick={() => setCalendarStatus(!calendarStatus)} className='headerSearchText'>{`${format(dates[0].startDate, "dd-MM-yyyy")} to ${format(dates[0].endDate, "dd-MM-yyyy")} `}</span>
                     { calendarStatus && (
                                             <DateRange 
                                             editableDateInputs={true}
-                                            onChange={item => setDate([item.selection])}
+                                            onChange={item => setDates([item.selection])}
                                             moveRangeOnFirstSelection={false}
-                                            ranges={date}
+                                            ranges={dates}
                                             minDate={new Date()}
                                             className="date"
                                         />
