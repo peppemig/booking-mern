@@ -4,7 +4,7 @@
 - Frontend: React + Standard CSS
 - Backend: Express + MongoDB
 
-<iframe src="https://giphy.com/embed/3E62V8OtxsqYDmNZOw" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/3E62V8OtxsqYDmNZOw">via GIPHY</a></p>
+![Alt Text](https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExYTI2MDYwNjgzMmFjYmM2ZDM2MmVmYWQzMTkyZjM2NmVhNjRmZThhYSZjdD1n/3E62V8OtxsqYDmNZOw/giphy.gif)
 
 ![booking2](https://user-images.githubusercontent.com/120139042/224383548-4c4c0489-ff2e-46ac-8add-2bb3270ae984.png)
 
