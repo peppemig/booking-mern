@@ -1,10 +1,13 @@
 # Booking Clone - MERN Stack
 
+![Alt Text](https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExYTI2MDYwNjgzMmFjYmM2ZDM2MmVmYWQzMTkyZjM2NmVhNjRmZThhYSZjdD1n/3E62V8OtxsqYDmNZOw/giphy.gif)
+
 - Full Stack Project
 - Frontend: React + Standard CSS
 - Backend: Express + MongoDB
 
-![Alt Text](https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExYTI2MDYwNjgzMmFjYmM2ZDM2MmVmYWQzMTkyZjM2NmVhNjRmZThhYSZjdD1n/3E62V8OtxsqYDmNZOw/giphy.gif)
+---------------------------
+- Screenshots:
 
 ![booking2](https://user-images.githubusercontent.com/120139042/224383548-4c4c0489-ff2e-46ac-8add-2bb3270ae984.png)
 
