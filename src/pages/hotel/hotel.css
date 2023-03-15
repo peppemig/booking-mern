@@ -3,6 +3,7 @@
     flex-direction: column;
     align-items: center;
     margin-top: 20px;
+    animation: fadeIn 1s;
 }
 
 .hotelWrapper {
@@ -170,6 +171,17 @@
               user-select: none; /* Non-prefixed version, currently
                                     supported by Chrome, Edge, Opera and Firefox */
   }
+
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+@-webkit-keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
 
 
 

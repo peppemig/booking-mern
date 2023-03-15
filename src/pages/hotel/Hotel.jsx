@@ -7,18 +7,23 @@ import { faArrowCircleLeft, faArrowCircleRight, faCircleXmark, faLocationDot } f
 import MailList from "../../components/mailList/MailList"
 import Footer from "../../components/footer/Footer"
 import useFetch from '../../hooks/useFetch'
-import { useParams } from 'react-router-dom'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import { SearchContext } from '../../context/SearchContext'
+import { AuthContext } from '../../context/AuthContext'
+import Reserve from '../../components/reserve/Reserve'
 
 const Hotel = () => {
   const [slideNumber, setSlideNumber] = useState(0)
   const [open, setOpen] = useState(false)
+  const [openModal, setOpenModal] = useState(false)
+  const navigate = useNavigate()
 
   const {id} = useParams()
 
   const {data,loading,error,reFetch} = useFetch(`http://localhost:8800/api/hotels/find/${id}`)
 
   const { dates, options } = useContext(SearchContext)
+  const { user } = useContext(AuthContext)
   
   const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24
   function dayDifference(date1, date2) {
@@ -32,6 +37,14 @@ const Hotel = () => {
   const handleOpen = (number) => {
     setSlideNumber(number)
     setOpen(true)
+  }
+
+  const handleClick = () => {
+    if(user){
+      setOpenModal(true)
+    } else {
+      navigate("/login")
+    }
   }
 
   return (
@@ -54,7 +67,7 @@ const Hotel = () => {
       <div className="hotelContainer">
 
         <div className="hotelWrapper">
-          <button className='bookNow'>Reserve or Book Now!</button>
+          <button className='bookNow' onClick={handleClick}>Reserve or Book Now!</button>
           <h1 className="hotelTitle">{data.name}</h1>
           <div className="hotelAddress">
             <FontAwesomeIcon icon={faLocationDot} />
@@ -80,7 +93,7 @@ const Hotel = () => {
               <h1>Perfect for a {days}-nights stay!</h1>
               <span>Located in the heart of {data.city}, this property has an excellent location score!</span>
               <h2><b>€{parseInt(data?.cheapestPrice) * days * options.room}</b> ({days} nights)</h2>
-              <button>Reserve or Book Now!</button>
+              <button onClick={handleClick}>Reserve or Book Now!</button>
             </div>
           </div>
         </div>
@@ -88,7 +101,7 @@ const Hotel = () => {
         <Footer/>
       </div>)
       }
-
+      {openModal && <Reserve setOpen={setOpenModal} hotelId={id} />}
     </div>
   )
 }

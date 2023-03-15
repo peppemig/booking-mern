@@ -2,6 +2,7 @@
     display: flex;
     justify-content: center;
     margin-top: 20px;
+    animation: fadeIn 1s;
 }
 
 .listWrapper {
@@ -82,4 +83,14 @@
     font-weight: 500;
     cursor: pointer;
     border-radius: 5px;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+@-webkit-keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
 }
