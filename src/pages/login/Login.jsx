@@ -4,17 +4,26 @@ import { useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../context/AuthContext'
 import "./login.css"
 import Navbar from '../../components/navbar/Navbar'
-import { faUser, faLock, faEnvelope } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faLock, faEnvelope, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Typewriter from 'typewriter-effect';
 import logo from '../../assets/travel.png'
+import Modal from '../../components/modal/Modal'
 
 const Login = () => {
+    const [openModal, setOpenModal] = useState(false)
     const [openLogin, setOpenLogin] = useState(true)
     const [credentials, setCredentials] = useState({
         username: undefined,
         password: undefined
     })
+
+    const [registerData, setRegisterData] = useState({
+        username: undefined,
+        password: undefined
+    })
+
+    const [registerError, setRegisterError] = useState('')
 
     const { loading, error, dispatch, user} = useContext(AuthContext)
 
@@ -22,6 +31,10 @@ const Login = () => {
 
     const handleChange = (e) => {
         setCredentials(prev=>({...prev, [e.target.id]:e.target.value}))
+    }
+
+    const handleChangeRegister = (e) => {
+        setRegisterData(prev=>({...prev, [e.target.id]:e.target.value}))
     }
 
     const handleLogin = async (e) => {
@@ -32,9 +45,18 @@ const Login = () => {
             dispatch({type:"LOGIN_SUCCESS", payload: res.data })
             navigate("/")
         } catch (err) {
-            //console.log(err)
             dispatch({type:"LOGIN_FAILURE", payload: err.response.data})
-            console.log(err.response.data)
+        }
+    }
+
+    const handleRegister = async (e) => {
+        e.preventDefault()
+        try {
+            const res = await axios.post("http://localhost:8800/api/auth/register", registerData)
+            setOpenModal(true)
+            setOpenLogin(true)
+        } catch (err) {
+            setRegisterError(err.response.data.message)
         }
     }
 
@@ -43,12 +65,16 @@ const Login = () => {
     }
 
   return (
+    
     <>
     <Navbar />
-    <div className="login">
-        <div className="wrapper">
-            <div className="lContainer1">
 
+    <div className="login">
+
+        <div className="wrapper">
+            <div className="lContainer1">            
+
+                {/* LOGIN FORM */}
                 {!user && openLogin &&
                 <>
                 <h1 style={{color: '#003580', paddingBottom: '10px'}}>Login</h1>
@@ -62,8 +88,15 @@ const Login = () => {
                 </div>
                 <div className="textboxContainer">
                 <button onClick={handleLogin} className='registerButton'>Login</button>
-                {error && <span>{error.message}</span>}
                 </div>
+
+                {error && 
+                <>
+                <div>
+                <span className='errorMessage'>{error.message}</span>
+                </div>
+                </>}
+
                 <div className='alreadyAccount'>
                 <span>Don't have an account yet? </span>
                 <button onClick={() => setOpenLogin(!openLogin)} className='signInButton'>Register</button>
@@ -71,25 +104,34 @@ const Login = () => {
                 </>
                 }
 
+
+                {/* REGISTER FORM */}
                 {!user && openLogin === false &&
                 <>
                 <h1 style={{color: '#003580', paddingBottom: '10px'}}>Register</h1>
                 <div className="textboxContainer">
                 <span style={{color: '#003580'}}><FontAwesomeIcon icon={faUser}/> Username</span>
-                <input type="text" id="username" onChange={handleChange} className="lInput" />
+                <input type="text" id="username" onChange={handleChangeRegister} className="lInput" />
                 </div>
                 <div className="textboxContainer">
                 <span style={{color: '#003580'}}><FontAwesomeIcon icon={faEnvelope}/> Email</span>
-                <input type="text" id="username" onChange={handleChange} className="lInput" />
+                <input type="text" id="email" onChange={handleChangeRegister} className="lInput" />
                 </div>
                 <div className="textboxContainer">
                 <span style={{color: '#003580'}}><FontAwesomeIcon icon={faLock}/> Password</span>
-                <input type="password"  id="password" onChange={handleChange} className="lInput" />
+                <input type="password"  id="password" onChange={handleChangeRegister} className="lInput" />
                 </div>
                 <div className="textboxContainer">
-                <button onClick={handleLogin} className='registerButton'>Register</button>
-                {error && <span>{error.message}</span>}
+                <button onClick={handleRegister} className='registerButton'>Register</button>
                 </div>
+
+                {registerError && 
+                <>
+                <div>
+                <span className='errorMessage'>{registerError}</span>
+                </div>
+                </>}
+                
                 <div className='alreadyAccount'>
                 <span>Already have an account? </span>
                 <button onClick={() => setOpenLogin(true)} className='signInButton'>Sign in</button>
@@ -97,6 +139,8 @@ const Login = () => {
                 </>
                 }
 
+
+                {/* ALREADY LOGGED IN FORM */}
                 {user &&
                 <>
                 <h1 style={{color: '#003580'}}>You are already logged in :)</h1>
@@ -127,6 +171,21 @@ const Login = () => {
             </div>
         </div>
     </div>
+
+    {openModal &&
+        <>
+        <div className="overlay">
+            <div className="modalContainer">
+                <div className='closeButton'>
+                <FontAwesomeIcon icon={faCircleXmark} onClick={() => setOpenModal(false)}/>
+                </div>
+                <h1>Registration succeeded</h1>
+                <p>You can now login!</p>
+            </div>
+        </div>
+        </>
+    }
+
     </>
   )
 }
